@@ -1,40 +1,33 @@
-name: "SFTP Sync"
-description: "Sync directory to server via sftp"
+name: "web deploy anything"
+description: "Deploy websites via sftp/ssh/rsync"
+author: "Sam Kirkland"
+inputs:
+  target-server:
+    description: "Deployment destination server. Formatted as domain.com:port. Port is optional and is your websites port, not your SSH port"
+    required: true
+  remote-user:
+    description: "SSH account username"
+    required: true
+  private-ssh-key:
+    description: "Private SSH key"
+    required: true
+  source-path:
+    description: "Path to upload to on the server, must end with trailing slash /"
+    required: true
+  destination-path:
+    description: "Folder to upload from, must end with trailing slash /"
+    required: true
+  ssh-port:
+    description: "Port for SSH"
+    default: "22"
+    required: false
+  rsync-options:
+    description: "Passes through options into rsync"
+    default: "--archive --verbose --compress --human-readable --progress --delete-after --exclude=.git* --exclude=.git/ --exclude=README.md --exclude=readme.md --exclude=.gitignore"
+    required: false
+runs:
+  using: "node16"
+  main: "dist/index.js"
 branding:
   icon: "upload-cloud"
-  color: "gray-dark"
-runs:
-  using: "docker"
-  image: "Dockerfile"
-inputs:
-  server:
-    description: "server"
-    required: true
-  port:
-    description: "server port (default: 22)"
-    required: true
-    default: 22
-  user:
-    description: "user"
-    required: true
-  user_private_key:
-    description: "Private SSH key for user (include via secrets if possible)"
-    required: true
-  host_public_key:
-    description: "Public SSH key of host"
-    required: true
-    default: ""
-  local:
-    description: "Local path to sync (default: .)"
-    required: true
-    default: .
-  remote:
-    description: "Path on server (default: .)"
-    required: true
-    default: .
-  ssh_options:
-    description: "Additional options for SSH"
-    required: false
-  mirror_options:
-    description: "Additional options for lftp mirror command (e.g. '--exclude-glob=.git*/ --verbose' is useful)"
-    required: false
+  color: "green"
